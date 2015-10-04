@@ -24,7 +24,7 @@ import android.view.MenuItem;
 
 import com.delicoin.android.delicoin.sync.SunshineSyncAdapter;
 
-public class MainActivity extends ActionBarActivity implements com.delicoin.android.delicoin.ForecastFragment.Callback {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
@@ -48,7 +48,7 @@ public class MainActivity extends ActionBarActivity implements com.delicoin.andr
             // fragment transaction.
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.weather_detail_container, new com.delicoin.android.delicoin.DetailFragment(), DETAILFRAGMENT_TAG)
+                        .replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
                         .commit();
             }
         } else {
@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity implements com.delicoin.andr
             getSupportActionBar().setElevation(0f);
         }
 
-        com.delicoin.android.delicoin.ForecastFragment forecastFragment =  ((com.delicoin.android.delicoin.ForecastFragment)getSupportFragmentManager()
+        ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast));
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
@@ -79,7 +79,7 @@ public class MainActivity extends ActionBarActivity implements com.delicoin.andr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, com.delicoin.android.delicoin.SettingsActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -92,11 +92,11 @@ public class MainActivity extends ActionBarActivity implements com.delicoin.andr
         String location = com.delicoin.android.delicoin.Utility.getPreferredLocation(this);
         // update the location in our second pane using the fragment manager
         if (location != null && !location.equals(mLocation)) {
-            com.delicoin.android.delicoin.ForecastFragment ff = (com.delicoin.android.delicoin.ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            com.delicoin.android.delicoin.ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
             if ( null != ff ) {
                 ff.onLocationChanged();
             }
-            com.delicoin.android.delicoin.DetailFragment df = (com.delicoin.android.delicoin.DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            com.delicoin.android.delicoin.DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
             if ( null != df ) {
                 df.onLocationChanged(location);
             }
@@ -111,16 +111,16 @@ public class MainActivity extends ActionBarActivity implements com.delicoin.andr
             // adding or replacing the detail fragment using a
             // fragment transaction.
             Bundle args = new Bundle();
-            args.putParcelable(com.delicoin.android.delicoin.DetailFragment.DETAIL_URI, contentUri);
+            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
 
-            com.delicoin.android.delicoin.DetailFragment fragment = new com.delicoin.android.delicoin.DetailFragment();
+            DetailFragment fragment = new DetailFragment();
             fragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
         } else {
-            Intent intent = new Intent(this, com.delicoin.android.delicoin.DetailActivity.class)
+            Intent intent = new Intent(this, DetailActivity.class)
                     .setData(contentUri);
             startActivity(intent);
         }
